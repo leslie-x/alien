@@ -28,9 +28,9 @@ class Ship:
     def update(self):
         """move location according to move flag"""
         #refresh the ship's x by ship_speed 
-        if self.moving_right:
+        if self.moving_right and self.rect.right<self.screen_rect.right:
             self.x += self.settings.ship_speed
-        if self.moving_left:
+        if self.moving_left and self.rect.left>0:
             self.x -= self.settings.ship_speed
         
         #rect.x restores .x's int like 1.5+1.5=3 rect.x=3
