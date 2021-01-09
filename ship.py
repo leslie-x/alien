@@ -15,6 +15,18 @@ class Ship:
         #locate ship at the bottom of the screen
         self.rect.midbottom = self.screen_rect.midbottom
         
+        #MOVE FLAG
+        self.moving_right = False
+        self.moving_left = False
+        
+    
+    def update(self):
+        """move location according to move flag"""
+        if self.moving_right:
+            self.rect.x += 1
+        if self.moving_left:
+            self.rect.x -= 1
+        
         
     def blitme(self):
         #paint ship at fixed place
