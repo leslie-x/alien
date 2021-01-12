@@ -3,6 +3,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 #-------------------------------class define------------------------------------------
 class AlienInvasion:
@@ -23,6 +24,10 @@ class AlienInvasion:
         self.ship = Ship(self)
         
         self.bullets = pygame.sprite.Group()
+        
+        self.aliens = pygame.sprite.Group()
+        
+        self._creat_fleet()
 
 #---------------------------------main option------------------------------------
     def run_game(self):
@@ -106,6 +111,39 @@ class AlienInvasion:
         #print(len(self.bullets))
     
         
+    def _creat_fleet(self):
+        """creat fleet of aliens"""
+        alien = Alien(self)
+        
+        #how many aliens in a row?
+        alien_width,alien_height = alien.rect.size
+        available_space_x = self.settings.screen_width - (2*alien_width)
+        num_aliens_x = available_space_x // (2*alien_width)
+        
+        #how many rows?
+        ship_height = self.ship.rect.height
+        available_space_y = (self.settings.screen_height -
+                             (3*alien_height) - ship_height)
+        num_rows = available_space_y // (2*alien_height)
+        
+        #creat rows of aliens
+        for row_num in range(num_rows):
+            for alien_num in range(num_aliens_x):
+                self._creat_alien(alien_num,row_num)
+            
+            
+    def _creat_alien(self,alien_num,row_num):
+        """creat aliens in the row"""
+        alien = Alien(self)
+        alien_width,alien_height = alien.rect.size
+        #get location
+        alien.x = alien_width + 2*alien_width*alien_num
+        alien.rect.x = alien.x
+        alien.rect.y = alien.rect.height + 2*alien.rect.height * row_num
+        self.aliens.add(alien)
+
+       
+        
     def _update_screen(self):
         #set color
         self.screen.fill(self.settings.bg_color)
@@ -114,6 +152,8 @@ class AlienInvasion:
         #show bullet
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        #show aliens
+        self.aliens.draw(self.screen)
         
         #show the screen
         pygame.display.flip()
