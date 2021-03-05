@@ -93,6 +93,7 @@ class AlienInvasion:
         """start when user clik play_button"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            self.settings.initialize_dynamic_settings()
             self._start_game()
             
     def _start_game(self):
@@ -173,6 +174,8 @@ class AlienInvasion:
             #if no aliens then creat a new group
             self.bullets.empty()
             self._creat_fleet()
+            #and speed up
+            self.settings.increase_speed()
         
         
     
